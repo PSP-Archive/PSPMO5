@@ -1,0 +1,86 @@
+#
+# Copyright (C) 2006 Ludovic Jacomme (ludovic.jacomme@gmail.com)
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+#
+TARGET = pspmo5
+PSPSDK = $(shell psp-config --pspsdk-path)
+PSPBIN = $(shell psp-config --psp-prefix)/bin
+SDL_CONFIG = $(PSPBIN)/sdl-config
+OBJS =  \
+  psp_main.o psp_kbd.o psp_sdl.o psp_gu.o psp_font.o \
+  psp_fmgr.o psp_menu.o  psp_menu_kbd.o psp_battery.o psp_menu_set.o \
+  psp_menu_help.o psp_irkeyb.o psp_run.o \
+  psp_menu_cheat.o \
+  psp_menu_list.o \
+  psp_editor.o \
+  global.o \
+  psp_irkeyb.o \
+  psp_sound.o \
+  psp_danzeff.o psp_mo5.o \
+  dc6809emul.o \
+  dcmo5devices.o \
+  dcmo5emulation.o \
+  dcmo5keyb.o \
+  dcmo5options.o \
+  dcmo5video.o \
+  miniunz.o \
+  unzip.o
+
+DEFAULT_CFLAGS = $(shell $(SDL_CONFIG) --cflags)
+
+PSP_FW_VERSION=15
+PSPMO5_VERSION=1.2.0-15
+
+MORE_CFLAGS = -I. \
+ -funroll-loops -ffast-math -fomit-frame-pointer \
+ -fno-strength-reduce -finline-functions \
+ -fsingle-precision-constant \
+ -DUSE_PSP_IRKEYB \
+ -DPSPMO5_VERSION=\"$(PSPMO5_VERSION)\" \
+ -DNO_STDIO_REDIRECT
+
+OPTIM_CFLAGS= -O2
+
+CFLAGS = $(DEFAULT_CFLAGS) $(MORE_CFLAGS)
+CXXFLAGS = $(DEFAULT_CFLAGS) $(MORE_CFLAGS) -fno-exceptions -fno-rtti
+
+LIBS += -lpspirkeyb -lSDL_image -lSDL -lpng -ljpeg -lpspaudio -lpspgu -lpsppower -lpsphprm -lz -lm -lstdc++
+
+EXTRA_TARGETS = EBOOT.PBP
+PSP_EBOOT_TITLE = PSPMO5-v$(PSPMO5_VERSION)
+PSP_EBOOT_ICON= pspmo5.png
+PSP_EBOOT_SND0= pspmo5.at3
+PSP_EBOOT_PIC1= pspmo5-pic.png
+
+include $(PSPSDK)/lib/build.mak
+
+all: SCEkxploit
+
+.c.o:
+	$(CC) $(CFLAGS) $(OPTIM_CFLAGS) -c -o $@ $<
+
+psp_gu.o : psp_gu.c
+	$(CC) -c $< $(CFLAGS) -O0
+
+install: all
+	@mkdir -p /media/usbdisk/psp/game150/__SCE__pspmo5/
+	@mkdir -p /media/usbdisk/psp/game150/%__SCE__pspmo5/
+	cp __SCE__pspmo5/EBOOT.PBP /media/usbdisk/psp/game150/__SCE__pspmo5/
+	cp %__SCE__pspmo5/EBOOT.PBP /media/usbdisk/psp/game150/%__SCE__pspmo5/
+
+realclean:
+	/bin/rm -f $(OBJS) EBOOT.PBP PARAM.SFO
+

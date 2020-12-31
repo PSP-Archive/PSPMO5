@@ -1,0 +1,36 @@
+1.2.0 
+
+- Cheat support !
+- Finally fix issue with "Home -> Exit" !
+- Add documentation for settings in help menu
+- The virtual keyboard is now usable in the file requester menu to
+  choose the first letter of the game you search !
+- Improve file requester with virtual keyboard to choose 
+  sequentially rom files beginning with a given letter
+- Text editor to write your own comments on games 
+- Display first comment line while browsing game files
+- Memory monitoring engine to find your own cheat code !
+- Text editor to modify the global cheat.txt file
+- Zip rom files are now decompressed in memory (much faster !)
+- Add eboot music (see http://www.jamendo.com/en/artist/nexus)
+
+1.0.3
+
+- Major speed improvements, now full speed with 50 fps even at 133Mhz !
+- Bug fix in file requester
+- Adjust the different render modes
+
+1.0.2
+
+- Disk and Tape support !
+- Load and save state !
+- Display and save thumbnail images for each save state
+- Add new render mode (Fit height)
+- New command/run menu
+- Add optional disk mode
+- Speed improvements
+- Add new hotkeys for quick save / quick load current state
+
+1.0.1
+
+- Intial release

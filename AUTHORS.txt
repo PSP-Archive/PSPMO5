@@ -1,0 +1,7 @@
+DCMO5 : MO5 Thomson Emulator for Unix, MacOS and Windows
+
+  Daniel Coulom (see http://dcmo5.free.fr/)
+
+PSPMO5 : Porting on PSP
+
+  Ludovic Jacomme alias Zx   (see http://zx81.zx81.free.fr/)
